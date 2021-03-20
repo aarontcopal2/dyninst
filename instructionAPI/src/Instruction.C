@@ -227,7 +227,7 @@ namespace Dyninst
 
     INSTRUCTION_EXPORT void Instruction::getOperands(std::vector<Operand>& operands) const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
       
@@ -236,7 +236,7 @@ namespace Dyninst
     
     INSTRUCTION_EXPORT Operand Instruction::getOperand(int index) const
      {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
 
@@ -282,7 +282,7 @@ namespace Dyninst
     
     INSTRUCTION_EXPORT void Instruction::getReadSet(std::set<RegisterAST::Ptr>& regsRead) const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
 
@@ -299,10 +299,11 @@ namespace Dyninst
     
     INSTRUCTION_EXPORT void Instruction::getWriteSet(std::set<RegisterAST::Ptr>& regsWritten) const
     { 
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
 
+      std::cout << "m_Operands.size(): " << m_Operands.size() << ", m_InsnOp.implicitWrites().size(): " << m_InsnOp.implicitWrites().size() << std::endl;
       for(std::list<Operand>::const_iterator curOperand = m_Operands.begin();
 	  curOperand != m_Operands.end();
 	  ++curOperand)
@@ -316,7 +317,7 @@ namespace Dyninst
     
     INSTRUCTION_EXPORT bool Instruction::isRead(Expression::Ptr candidate) const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
 
@@ -334,7 +335,7 @@ namespace Dyninst
 
     INSTRUCTION_EXPORT bool Instruction::isWritten(Expression::Ptr candidate) const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
 
@@ -352,7 +353,7 @@ namespace Dyninst
     
     INSTRUCTION_EXPORT bool Instruction::readsMemory() const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
 
@@ -374,7 +375,7 @@ namespace Dyninst
     
     INSTRUCTION_EXPORT bool Instruction::writesMemory() const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
 
@@ -392,7 +393,7 @@ namespace Dyninst
     
     INSTRUCTION_EXPORT void Instruction::getMemoryReadOperands(std::set<Expression::Ptr>& memAccessors) const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
 
@@ -408,7 +409,7 @@ memAccessors.begin()));
     
     INSTRUCTION_EXPORT void Instruction::getMemoryWriteOperands(std::set<Expression::Ptr>& memAccessors) const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
       }
 
@@ -424,7 +425,7 @@ memAccessors.begin()));
 
     INSTRUCTION_EXPORT Operand Instruction::getPredicateOperand() const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
         decodeOperands();
       }
 
@@ -438,7 +439,7 @@ memAccessors.begin()));
     }
     INSTRUCTION_EXPORT bool Instruction::hasPredicateOperand() const
     {
-      if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+      if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
         decodeOperands();
       }
 
@@ -467,7 +468,7 @@ memAccessors.begin()));
         {
             return makeReturnExpression();
         }
-        if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+        if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
         }
 
@@ -484,7 +485,7 @@ memAccessors.begin()));
 
     INSTRUCTION_EXPORT std::string Instruction::format(Address addr) const
     {
-        if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+        if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
         }
 
@@ -589,7 +590,7 @@ memAccessors.begin()));
           return true;
       default:
       {
-        if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+        if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
           decodeOperands();
         }
           for(cftConstIter targ = m_Successors.begin();
@@ -626,7 +627,7 @@ memAccessors.begin()));
        InsnCategory c = entryToCategory(m_InsnOp.getID());
        if(c == c_BranchInsn && (arch_decoded_from == Arch_ppc32 || arch_decoded_from == Arch_ppc64))
        {
-         if (arch_decoded_from != Arch_cuda && m_Operands.empty()) {
+         if (arch_decoded_from != Arch_cuda && arch_decoded_from != Arch_intelGen9 && m_Operands.empty()) {
            decodeOperands();
          }
           for(cftConstIter cft = cft_begin();
