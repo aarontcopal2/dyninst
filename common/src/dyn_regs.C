@@ -274,6 +274,7 @@ unsigned int MachRegister::size() const {
             break;
  
         case Arch_cuda:
+        case Arch_intelGen9:
             return 8;
         case Arch_amdgpu_vega:{
             int reg_class = (reg&0x00ff0000 ) ;
@@ -348,7 +349,6 @@ unsigned int MachRegister::size() const {
             break;
         }
         case Arch_amdgpu_rdna:
-        case Arch_intelGen9:
         {
           assert(0);
           break;
@@ -671,6 +671,7 @@ bool MachRegister::isFlag() const
                              return (reg & 0x0000F000);
                          }
         case Arch_cuda:
+        case Arch_intelGen9:
             return false;
 
         default:

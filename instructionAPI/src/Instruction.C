@@ -303,7 +303,6 @@ namespace Dyninst
           decodeOperands();
       }
 
-      std::cout << "m_Operands.size(): " << m_Operands.size() << ", m_InsnOp.implicitWrites().size(): " << m_InsnOp.implicitWrites().size() << std::endl;
       for(std::list<Operand>::const_iterator curOperand = m_Operands.begin();
 	  curOperand != m_Operands.end();
 	  ++curOperand)
